@@ -22,8 +22,18 @@ jobs:
           key: ${{ secrets.DEV_SERVER_KEY }} # 개인키 in GitHub Secret
           script: |
             echo "🚀 배포 시작"
-            rm -rf ai-service
+
+            # 기존 소스 삭제
+            if [ -d "ai-service" ]; then
+              echo "📦 기존 ai-service 삭제 중..."
+              rm -rf ai-service
+            fi
+
+            # GitHub에서 최신 소스 클론
+            echo "📥 소스 클론 중..."
             git clone -b develop https://github.com/git-branch-practice/ai-service.git
+
+            # 디렉토리 진입 및 배포 스크립트 실행
             cd ai-service
             bash ai-deploy.sh
           
