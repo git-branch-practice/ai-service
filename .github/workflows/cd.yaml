@@ -1,0 +1,26 @@
+name: CD - AI Deploy to Dev Server
+
+on:
+  workflow_run:
+    workflows: ["CI - AI CI"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+
+    steps:
+      - name: SSH into Dev Server and Deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.DEV_SSH_HOST }} # 서버 IP
+          username: ${{ secrets.DEV_SSH_USER }} # 서버 유저
+          key: ${{ secrets.DEV_SERVER_KEY }} # 개인키 in GitHub Secret
+          script: |
+            echo "🚀 ai-deploy.sh 실행"
+            cd ai-service
+            bash ai-deploy.sh
