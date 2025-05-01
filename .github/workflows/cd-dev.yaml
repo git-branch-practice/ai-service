@@ -20,6 +20,10 @@ jobs:
             echo "${{ secrets.DEV_SERVER_KEY }}" | base64 -d > private_key
             chmod 600 private_key
 
+      - name: Copy deploy script to server
+        run: |
+          scp -o StrictHostKeyChecking=no -i private_key ./ai-deploy.sh ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SSH_HOST }}:~/ai-service/deploy/deploy-ai.sh
+
       - name: SSH Deploy Script Execution
         run: |
           ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SSH_HOST }} 'bash ~/ai-service/deploy/deploy-ai.sh'
