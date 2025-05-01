@@ -1,0 +1,19 @@
+name: CI - AI CI
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop, main]
+
+jobs:
+  build-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Check for basic Python errors
+        run: |
+          python3 -m py_compile main.py
