@@ -21,6 +21,10 @@ jobs:
           username: ${{ secrets.DEV_SSH_USER }} # 서버 유저
           key: ${{ secrets.DEV_SERVER_KEY }} # 개인키 in GitHub Secret
           script: |
-            echo "🚀 ai-deploy.sh 실행"
+            echo "🚀 배포 시작"
+            rm -rf ai-service
+            git clone -b develop https://github.com/git-branch-practice/ai-service.git
             cd ai-service
             bash ai-deploy.sh
+          
+            
