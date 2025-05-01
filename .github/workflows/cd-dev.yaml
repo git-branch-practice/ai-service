@@ -22,8 +22,8 @@ jobs:
 
       - name: Copy deploy script to server
         run: |
-          scp -o StrictHostKeyChecking=no -i private_key ./ai-deploy.sh ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SSH_HOST }}:~/ai-service/deploy/deploy-ai.sh
+          scp -o StrictHostKeyChecking=no -i private_key ./ai-deploy.sh ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SSH_HOST }}:~/ai-service/deploy/ai-deploy.sh
 
       - name: SSH Deploy Script Execution
         run: |
-          ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SSH_HOST }} 'bash ~/ai-service/deploy/deploy-ai.sh'
+          ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SSH_HOST }} 'bash ~/ai-service/deploy/ai-deploy.sh'
