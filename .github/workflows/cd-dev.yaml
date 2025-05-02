@@ -1,8 +1,8 @@
-name: CD - Deploy to Staging Server
+name: CD - AI Deploy to Dev Server
 
 on:
   workflow_run:
-    workflows: ["CI - FastAPI Build Check"]
+    workflows: ["CI - AI Build Check"]
     types:
       - completed
 
@@ -10,22 +10,16 @@ jobs:
   deploy:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+    environment: staging
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Decode SSH Private Key
-        run: |
-            echo "${{ secrets.DEV_SERVER_KEY }}" | base64 -d > private_key
-            chmod 600 private_key
-
-      - name: Copy deploy script to server
-        run: |
-          ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SSH_HOST }} 'mkdir -p ~/ai-service/deploy'
-          scp -o StrictHostKeyChecking=no -i private_key ./deploy-ai.sh ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SSH_HOST }}:~/ai-service/deploy/deploy-ai.sh
-      
-
-      - name: SSH Deploy Script Execution
-        run: |
-          ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SSH_HOST }} 'bash ~/ai-service/deploy/deploy-ai.sh'
+      - name: SSH into Dev Server and Deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.DEV_SSH_HOST }} # 서버 IP
+          username: ${{ secrets.DEV_SSH_USER }} # 서버 유저
+          key: ${{ secrets.DEV_SERVER_KEY }} # 개인키 in GitHub Secret
+          script: |
+            echo "🚀 deploy-ai.sh 실행"
+            cd ai-service
+            bash deploy-ai.sh
