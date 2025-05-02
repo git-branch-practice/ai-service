@@ -20,6 +20,8 @@ jobs:
           username: ${{ secrets.DEV_SSH_USER }} # 서버 유저
           key: ${{ secrets.DEV_SERVER_KEY }} # 개인키 in GitHub Secret
           script: |
+            cd ~
+            
             # 기존 소스 삭제
             if [ -d "ai-service" ]; then
             echo "📦 기존 ai-service 삭제 중..."
