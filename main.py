@@ -7,7 +7,7 @@ app = FastAPI()
 class Message(BaseModel):
     content: str
 
-@app.post("/ai/analyze")
+@app.post("/api/analyze")
 def analyze(message: Message):
     emotion = random.choice(["positive", "negative"])
     return {"emotion": emotion}
