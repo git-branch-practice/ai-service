@@ -10,29 +10,37 @@ BRANCH="develop"
 PORT=5000
 SERVICE_NAME="ai-service"
 
-# === [1] 루트 디렉토리로 이동 ===
-echo "📁 작업 디렉토리 이동: $ROOT_DIR"
+# === [1] 작업 디렉토리로 이동 ===
+echo "📁 작업 디렉토리 이동: $HOME"
 cd "$HOME"
 
-# === [3] 기존 소스 제거 ===
-echo "🧹 기존 소스 제거"
-rm -rf *
+# === [2] 기존 디렉토리 삭제 ===
+if [ -d "$SERVICE_NAME" ]; then
+  echo "🧹 기존 $SERVICE_NAME 디렉토리 삭제"
+  rm -rf "$SERVICE_NAME"
+fi
 
-# === [5] 기존 PM2 프로세스 종료 ===
+# === [3] 최신 소스 클론 ===
+echo "📥 소스 클론 중..."
+git clone -b "$BRANCH" "$REPO_URL"
+
+cd "$SERVICE_NAME"
+
+# === [4] 기존 PM2 프로세스 종료 ===
 echo "🛑 기존 PM2 프로세스 종료: $SERVICE_NAME"
 pm2 delete "$SERVICE_NAME" || true
 
-# === [6] Python 가상환경 생성 ===
+# === [5] Python 가상환경 생성 ===
 echo "🐍 Python 가상환경 생성"
 python3 -m venv venv
 
-# === [7] 가상환경 활성화 및 의존성 설치 ===
+# === [6] 가상환경 활성화 및 의존성 설치 ===
 echo "📦 의존성 설치"
 source venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt || pip install fastapi uvicorn
 
-# === [8] PM2로 FastAPI 실행 ===
+# === [7] PM2로 FastAPI 실행 ===
 echo "🚦 PM2로 FastAPI 실행: $SERVICE_NAME"
 pm2 start venv/bin/uvicorn \
   --name "$SERVICE_NAME" \
@@ -41,7 +49,7 @@ pm2 start venv/bin/uvicorn \
   --host 0.0.0.0 \
   --port "$PORT"
 
-# === [9] PM2 상태 저장 및 확인 ===
+# === [8] PM2 상태 저장 및 확인 ===
 pm2 save
 pm2 status
 
