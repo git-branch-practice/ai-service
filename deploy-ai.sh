@@ -18,10 +18,6 @@ cd "$HOME"
 echo "🧹 기존 소스 제거"
 rm -rf *
 
-# === [4] Git에서 소스 클론 ===
-echo "🔄 Git 클론: $REPO_URL (브랜치: $BRANCH)"
-git clone -b "$BRANCH" "$REPO_URL" .
-
 # === [5] 기존 PM2 프로세스 종료 ===
 echo "🛑 기존 PM2 프로세스 종료: $SERVICE_NAME"
 pm2 delete "$SERVICE_NAME" || true
