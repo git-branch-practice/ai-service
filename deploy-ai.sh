@@ -14,14 +14,6 @@ SERVICE_NAME="ai-service"
 echo "📁 작업 디렉토리 이동: $ROOT_DIR"
 cd "$HOME"
 
-# === [2] 디렉토리 없으면 생성 ===
-if [ ! -d "$SERVICE_NAME" ]; then
-  echo "📁 $SERVICE_NAME 디렉토리 생성"
-  mkdir "$SERVICE_NAME"
-fi
-
-cd "$SERVICE_NAME"
-
 # === [3] 기존 소스 제거 ===
 echo "🧹 기존 소스 제거"
 rm -rf *
