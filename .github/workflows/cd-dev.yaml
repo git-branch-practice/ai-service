@@ -2,7 +2,7 @@ name: CD - AI Deploy to Dev Server
 
 on:
   workflow_run:
-    workflows: ["CI - AI Build Check"]
+    workflows: ["CI - FastAPI Build Check"]
     types:
       - completed
 
