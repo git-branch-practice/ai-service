@@ -21,9 +21,9 @@ jobs:
           key: ${{ secrets.DEV_SERVER_KEY }} # 개인키 in GitHub Secret
           script: |
             # 기존 소스 삭제
-            if [ -d "frontend-service" ]; then
-            echo "📦 기존 frontend-service 삭제 중..."
-            rm -rf frontend-service
+            if [ -d "ai-service" ]; then
+            echo "📦 기존 ai-service 삭제 중..."
+            rm -rf ai-service
             fi
             
             # 최신 소스 클론
